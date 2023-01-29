@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { Pitch, PitchDetector } from 'capacitor-musetrainer-pitch-detection';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  pitch: Pitch | null = null;
 
-  constructor() {}
+  constructor(private platform: Platform) {}
 
+  init() {
+    this.platform.ready().then(() => {
+      PitchDetector.addListener('pitchReceive', (pitch) => {
+        this.pitch = pitch;
+      });
+    });
+  }
 }
