@@ -1,0 +1,7 @@
+{
+  "name": "pitch-detector",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
