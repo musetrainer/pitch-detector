@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Pitch Detector
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,7 +14,7 @@
   </ion-header>
 
   <div id="container">
-    <strong>Current pitch</strong>
-    {{ pitch }}
+    <strong>Note: {{ note }}</strong>
+    <p>Microphone: {{ status }}</p>
   </div>
 </ion-content>

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Pitch, PitchDetector } from 'capacitor-musetrainer-pitch-detection';
+import { PitchDetector } from 'capacitor-musetrainer-pitch-detection';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +8,25 @@ import { Pitch, PitchDetector } from 'capacitor-musetrainer-pitch-detection';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  pitch: Pitch | null = null;
+  note = '';
+  status = '';
 
-  constructor(private platform: Platform) {}
+  constructor(private platform: Platform, private ref: ChangeDetectorRef) {
+    ref.detach();
+    setInterval(() => {
+      this.ref.detectChanges();
+    }, 100);
+  }
 
-  init() {
+  ngOnInit() {
     this.platform.ready().then(() => {
-      PitchDetector.addListener('pitchReceive', (pitch) => {
-        this.pitch = pitch;
+      PitchDetector.requestPermissions().then((status) => {
+        this.status = status.microphone;
+        if (status.microphone === 'granted') {
+          PitchDetector.addListener('pitchReceive', (pitch) => {
+            this.note = `${pitch.note} / ${pitch.noteAlt}`;
+          });
+        }
       });
     });
   }
